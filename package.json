@@ -37,6 +37,9 @@
     "e2e": "npm run postinstall:web && ng e2e"
   },
   "dependencies": {
+    "@fortawesome/angular-fontawesome": "^0.2.1",
+    "@fortawesome/fontawesome-svg-core": "^1.2.6",
+    "@fortawesome/free-solid-svg-icons": "^5.4.1",
     "@ng-bootstrap/ng-bootstrap": "^3.3.1",
     "@types/lodash": "^4.14.117",
     "@types/nedb": "^1.8.6",

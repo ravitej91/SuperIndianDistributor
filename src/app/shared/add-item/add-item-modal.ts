@@ -3,6 +3,7 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { ElectronService } from '../../providers/electron.service';
+import { faRupeeSign } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -12,29 +13,34 @@ import { ElectronService } from '../../providers/electron.service';
     providers: [NgbModalConfig, NgbModal]
 })
 export class AddItemModal {
+    faRupeeSign = faRupeeSign;
+    categories: Array<any>;
+    electronService: ElectronService;
+
     itemForm = this.fb.group({
         itemName: ['', [Validators.required, Validators.minLength(3)]],
         brand: [''],
         category: ['', [Validators.required]],
         type: ['pack', [Validators.required]],
-        quantityPerPack: ['', [Validators.pattern("^[0-9]*$")]],
-        unitPrice: [''],
-        totalPrice: [''],
-        sequence: [''],
+        quantityPerPack: [1, [Validators.required, Validators.pattern("^[0-9]*$")]],
+        unitPrice: [11.05, [Validators.required, Validators.pattern("^[0-9]+(\.[0-9]{1,2})?$")]],
+        totalPrice: [0],
+        sequence: [100],
     });
-    categories: Array<any>;
-    electronService: ElectronService
 
     constructor(config: NgbModalConfig, private modalService: NgbModal, private fb: FormBuilder, electronService: ElectronService) {
         config.backdrop = 'static';
         config.keyboard = true;
         this.electronService = electronService;
+
     }
 
     ngOnInit() {
         let _self = this;
         this.electronService.ipcRenderer.on("category-list-listener", function (event, args) {
             _self.categories = args.result;
+
+            _self.itemForm.controls['category'].setValue(_self.categories[0].name);
         });
 
         this.electronService.ipcRenderer.send("notify-backend", {
@@ -42,6 +48,53 @@ export class AddItemModal {
             model: "Category",
             listener: "category-list-listener"
         });
+
+        this.onFieldChanges();
+
+    }
+
+    onFieldChanges() {
+
+        this.calculateTotalPrice(this.itemForm
+            .controls['unitPrice']
+            .value, this.itemForm
+                .controls['quantityPerPack']
+                .value);
+
+        this.itemForm.get('unitPrice').valueChanges.subscribe(val => {
+
+            this.calculateTotalPrice(val, this.itemForm
+                .controls['quantityPerPack']
+                .value);
+        });
+
+        this.itemForm.get('quantityPerPack').valueChanges.subscribe(val => {
+
+            this.calculateTotalPrice(this.itemForm
+                .controls['unitPrice']
+                .value, val);
+        });
+
+        this.itemForm.get('type').valueChanges.subscribe(val => {
+            if (val === 'single') {
+                // set the value to 1 and make it disabled state
+                this.itemForm
+                    .controls['quantityPerPack']
+                    .setValue(1);
+            } else {
+                this.itemForm
+                    .controls['quantityPerPack']
+                    .setValue('');
+            }
+        });
+    }
+
+    calculateTotalPrice(unitPrice, quantityPerPack) {
+        let totalPrice = (unitPrice * quantityPerPack).toFixed(2);
+
+        this.itemForm
+            .controls['totalPrice']
+            .setValue(totalPrice);
     }
 
     open(content) {
@@ -56,5 +109,9 @@ export class AddItemModal {
     get itemName() { return this.itemForm.get('itemName'); }
 
     get quantityPerPack() { return this.itemForm.get('quantityPerPack') }
+
+    get category() { return this.itemForm.get('category') }
+
+    get unitPrice() { return this.itemForm.get('unitPrice') }
 }
 

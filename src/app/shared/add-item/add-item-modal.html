@@ -10,7 +10,7 @@
             <div class="form-group row">
                 <label for="itemName" class="col-3 col-form-label">Item Name</label>
                 <div class="col-9">
-                    <input id="itemName" name="itemName" placeholder="Freedom" type="text" class="form-control here"
+                    <input id="itemName" name="itemName" placeholder="Item Name" type="text" class="form-control here"
                         formControlName="itemName">
                     <div *ngIf="itemName.invalid && (itemName.dirty || itemName.touched)" class="cs-invalid-feedback">
                         <span *ngIf="itemName.errors.required">
@@ -65,31 +65,55 @@
                 </div>
                 <div *ngIf="quantityPerPack.invalid && (quantityPerPack.dirty || quantityPerPack.touched)" class="cs-invalid-feedback">
                     <span *ngIf="quantityPerPack.errors.required">
-                        Item Name is Required
+                        Items per pack is required
                     </span>
-                    <span *ngIf="quantityPerPack.errors.minlength">
-                        Item name must have minimum of 3 characters
+                    <span *ngIf="quantityPerPack.errors.pattern">
+                        Only numbers are allowed
                     </span>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="unitPrice" class="col-3 col-form-label">Unit Price</label>
                 <div class="col-9">
-                    <input id="unitPrice" name="unitPrice" placeholder="Enter Value in Ruppees" type="text" class="form-control here"
-                        required="required" formControlName="unitPrice">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <fa-icon [icon]="faRupeeSign"></fa-icon>
+                            </span>
+                        </div>
+                        <input id="unitPrice" name="unitPrice" placeholder="Enter Value in Ruppees" type="number" class="form-control here"
+                            required="required" formControlName="unitPrice" step=".01">
+                    </div>
+
+                    <div *ngIf="unitPrice.invalid && (unitPrice.dirty || unitPrice.touched)" class="cs-invalid-feedback">
+                        <span *ngIf="unitPrice.errors.required">
+                            Unit Price is Required
+                        </span>
+                        <span *ngIf="unitPrice.errors.pattern">
+                            Only numbers are allowed
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="totalPrice" class="col-3 col-form-label">Total Price</label>
                 <div class="col-9">
-                    <input id="totalPrice" name="totalPrice" placeholder="Enter value in rupees" type="text" class="form-control here"
-                        required="required" formControlName="totalPrice">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <fa-icon [icon]="faRupeeSign"></fa-icon>
+                            </span>
+                        </div>
+                        <input id="totalPrice" name="totalPrice" placeholder="Enter value in rupees" type="number"
+                            class="form-control here" required="required" formControlName="totalPrice" step=".01"
+                            readonly>
+                    </div>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="sequence" class="col-3 col-form-label">Sequence</label>
                 <div class="col-9">
-                    <input id="sequence" name="sequence" placeholder="Item Order - 0 to 100" type="text" class="form-control here"
+                    <input id="sequence" name="sequence" placeholder="Item Order - 0 to 100" type="number" class="form-control here"
                         formControlName="sequence">
                 </div>
             </div>

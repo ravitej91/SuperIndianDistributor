@@ -3,7 +3,7 @@ import * as Q from 'q';
 import * as _ from 'lodash';
 
 const STORE_NAME = "category";
-const CATEGORY_NAMES = ['oil', 'peanuts', 'maida'];
+const CATEGORY_NAMES = ['Oil', 'Peanuts', 'Maida'];
 
 export class CategoryModel extends SIDModel {
     constructor() {

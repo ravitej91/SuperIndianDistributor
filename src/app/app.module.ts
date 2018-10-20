@@ -11,6 +11,9 @@ import { AppRoutingModule } from './app-routing.module';
 
 // Bootstrap
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+// FontAwesome
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 // Reactive Forms
 import { ReactiveFormsModule } from '@angular/forms';
@@ -47,6 +50,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     NgbModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
