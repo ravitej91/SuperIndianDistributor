@@ -1,6 +1,7 @@
 import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import SIDBackend from './backend/index';
 
 let win, serve;
 const args = process.argv.slice(1);
@@ -42,6 +43,7 @@ function createWindow() {
     win = null;
   });
 
+  let sidBackend = new SIDBackend();
 }
 
 try {
