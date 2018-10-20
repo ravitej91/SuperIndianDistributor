@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ThrowStmt } from '@angular/compiler';
 import { ElectronService } from '../../providers/electron.service';
 
 @Component({

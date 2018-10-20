@@ -1,8 +1,74 @@
 <div class="container-fluid">
-  <ul>
-    <li *ngFor="let item of items">
-      {{ item.name }}
-    </li>
-  </ul>
-
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <div style="padding: 10px;">
+            <!-- Buttons to do some actions -->
+            <add-item-modal></add-item-modal>
+            <button type="button" class="btn btn-outline-primary">Update Stock</button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Item Name</th>
+                <th scope="col">Opening Stock</th>
+                <th scope="col">Current Stock</th>
+                <th scope="col">Closing Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Freedom</td>
+                <td>10</td>
+                <td>4</td>
+                <td>9</td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>Freedom</td>
+                <td>10</td>
+                <td>4</td>
+                <td>9</td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>Freedom</td>
+                <td>10</td>
+                <td>4</td>
+                <td>9</td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>Freedom</td>
+                <td>10</td>
+                <td>4</td>
+                <td>9</td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>Freedom</td>
+                <td>10</td>
+                <td>4</td>
+                <td>9</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          This is some text within a card body.
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
