@@ -1,7 +1,8 @@
 import { app } from 'electron';
 import * as Datastore from 'nedb';
 import * as path from 'path';
-import { TouchSequence } from 'selenium-webdriver';
+
+const databaseFolder = "database";
 
 export default class SIDModel {
     dataStoreName: string;
@@ -10,13 +11,17 @@ export default class SIDModel {
 
     constructor() {
         // get app path
-        this.appPath = app.getAppPath();
+        this.appPath = app.getPath('userData');
+    }
+
+    setDataStoreName(dataStoreName) {
+        this.dataStoreName = path.join(databaseFolder, dataStoreName + '.json');
     }
 
     loadDataStore() {
         // create and load datastore
         const datastorePath = path.join(this.appPath, this.dataStoreName);
-        console.log("Stock DB :: ", datastorePath);
+        console.log("Database path :: ", datastorePath);
         this.db = new Datastore({ filename: datastorePath, autoload: true });
     }
 }

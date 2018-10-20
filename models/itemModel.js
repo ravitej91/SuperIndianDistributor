@@ -12,15 +12,22 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("./index");
 var Q = require("q");
-var STORE_NAME = "usersdb";
+var STORE_NAME = "item";
 var ItemModel = /** @class */ (function (_super) {
     __extends(ItemModel, _super);
     function ItemModel() {
         var _this = _super.call(this) || this;
-        _this.dataStoreName = STORE_NAME;
+        _this.setDataStoreName(STORE_NAME);
         _this.loadDataStore();
+        _this.insertDocs();
         return _this;
     }
+    ItemModel.prototype.insertDocs = function () {
+        this.db.insert({
+            name: "Freedom",
+            cost: "5.0"
+        }, function (args) { });
+    };
     ItemModel.prototype.findAllDocs = function () {
         var _self = this;
         return Q.Promise(function (resolve, reject) {

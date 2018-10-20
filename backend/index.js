@@ -7,13 +7,13 @@ var SIDBackend = /** @class */ (function () {
         this.startListening();
     }
     SIDBackend.prototype.startListening = function () {
-        electron_1.ipcMain.on('backend-event', function (event, args) {
+        electron_1.ipcMain.on('notify-backend', function (event, args) {
             // check for the action model and action
             console.log("Args :: ", args);
             itemModel_1.Item
                 .findAllDocs()
                 .then(function (docs) {
-                event.sender.send('renderer-event-reply', docs);
+                event.sender.send('reply-to-frontend', docs);
             });
         });
     };
