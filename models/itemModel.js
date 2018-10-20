@@ -25,7 +25,6 @@ var ItemModel = /** @class */ (function (_super) {
         var _self = this;
         return Q.Promise(function (resolve, reject) {
             _self.db.find({}, function (error, docs) {
-                console.log("Docs LL ", docs);
                 if (error) {
                     console.log("ItemModel Error :: ", error);
                     return reject("");

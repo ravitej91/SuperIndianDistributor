@@ -7,7 +7,8 @@ var SIDBackend = /** @class */ (function () {
         this.startListening();
     }
     SIDBackend.prototype.startListening = function () {
-        electron_1.ipcMain.on('renderer-event', function (event, args) {
+        electron_1.ipcMain.on('backend-event', function (event, args) {
+            // check for the action model and action
             console.log("Args :: ", args);
             itemModel_1.Item
                 .findAllDocs()

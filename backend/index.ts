@@ -8,7 +8,7 @@ export default class SIDBackend {
     }
 
     startListening() {
-        ipcMain.on('backend-event', (event, args) => {
+        ipcMain.on('notify-backend', (event, args) => {
             // check for the action model and action
 
             console.log("Args :: ", args);
@@ -16,7 +16,7 @@ export default class SIDBackend {
             Item
                 .findAllDocs()
                 .then(function (docs) {
-                    event.sender.send('renderer-event-reply', docs);
+                    event.sender.send('reply-to-frontend', docs);
                 });
         });
     }
