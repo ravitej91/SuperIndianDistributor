@@ -2,18 +2,39 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var itemModel_1 = require("../models/itemModel");
+var categoryModel_1 = require("../models/categoryModel");
+var Q = require("q");
+var definedModels = {
+    Category: categoryModel_1.Category,
+    Item: itemModel_1.Item
+};
 var SIDBackend = /** @class */ (function () {
     function SIDBackend() {
         this.startListening();
     }
     SIDBackend.prototype.startListening = function () {
+        var _this = this;
         electron_1.ipcMain.on('notify-backend', function (event, args) {
             // check for the action model and action
-            console.log("Args :: ", args);
-            itemModel_1.Item
-                .findAllDocs()
+            _this.invokeAction(args.model, args.action)
                 .then(function (docs) {
-                event.sender.send('reply-to-frontend', docs);
+                event.sender.send(args.listener, {
+                    result: docs
+                });
+            })
+                .catch(function (error) {
+                console.log(error);
+            });
+        });
+    };
+    SIDBackend.prototype.invokeAction = function (model, action) {
+        return Q.Promise(function (resolve, reject) {
+            definedModels[model]
+                .invokeAction(action)
+                .then(function (result) {
+                return resolve(result);
+            }).catch(function (err) {
+                return reject(err);
             });
         });
     };

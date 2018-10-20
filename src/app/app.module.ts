@@ -12,6 +12,9 @@ import { AppRoutingModule } from './app-routing.module';
 // Bootstrap
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+// Reactive Forms
+import { ReactiveFormsModule } from '@angular/forms';
+
 // NG Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -43,6 +46,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule,
     AppRoutingModule,
     NgbModule,
+    ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

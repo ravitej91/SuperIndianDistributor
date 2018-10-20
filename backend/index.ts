@@ -1,6 +1,12 @@
 import { ipcMain } from 'electron';
 import { Item } from '../models/itemModel';
-import { importExpr } from '@angular/compiler/src/output/output_ast';
+import { Category } from '../models/categoryModel';
+import * as Q from 'q';
+
+const definedModels = {
+    Category: Category,
+    Item: Item
+}
 
 export default class SIDBackend {
     constructor() {
@@ -10,13 +16,26 @@ export default class SIDBackend {
     startListening() {
         ipcMain.on('notify-backend', (event, args) => {
             // check for the action model and action
-
-            console.log("Args :: ", args);
-
-            Item
-                .findAllDocs()
+            this.invokeAction(args.model, args.action)
                 .then(function (docs) {
-                    event.sender.send('reply-to-frontend', docs);
+                    event.sender.send(args.listener, {
+                        result: docs
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+    }
+
+    invokeAction(model, action) {
+        return Q.Promise(function (resolve, reject) {
+            definedModels[model]
+                .invokeAction(action)
+                .then(function (result) {
+                    return resolve(result);
+                }).catch(function (err) {
+                    return reject(err);
                 });
         });
     }

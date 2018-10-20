@@ -15,15 +15,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     let _self = this;
-    this.electronService.ipcRenderer.on("reply-to-frontend", function (event, args) {
-      console.log("Args :: ", args);
-
-      _self.items = args;
-
-      console.log('Event :: ', event);
-    });
-
-    this.electronService.ipcRenderer.send("notify-backend", { action: "", model: "" });
   }
 
 }

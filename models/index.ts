@@ -22,6 +22,14 @@ export default class SIDModel {
         // create and load datastore
         const datastorePath = path.join(this.appPath, this.dataStoreName);
         console.log("Database path :: ", datastorePath);
-        this.db = new Datastore({ filename: datastorePath, autoload: true });
+        this.db = new Datastore({
+            timestampData: true,
+            filename: datastorePath,
+            autoload: true
+        });
+    }
+
+    invokeAction(action) {
+        return this[action]();
     }
 }

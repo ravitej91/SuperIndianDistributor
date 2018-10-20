@@ -16,7 +16,14 @@ var SIDModel = /** @class */ (function () {
         // create and load datastore
         var datastorePath = path.join(this.appPath, this.dataStoreName);
         console.log("Database path :: ", datastorePath);
-        this.db = new Datastore({ filename: datastorePath, autoload: true });
+        this.db = new Datastore({
+            timestampData: true,
+            filename: datastorePath,
+            autoload: true
+        });
+    };
+    SIDModel.prototype.invokeAction = function (action) {
+        return this[action]();
     };
     return SIDModel;
 }());

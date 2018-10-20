@@ -1,12 +1,104 @@
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Hi there!</h4>
+        <h4 class="modal-title" id="modal-basic-title">Add Item</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p>Hello, World!</p>
+        <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+            <div class="form-group row">
+                <label for="itemName" class="col-3 col-form-label">Item Name</label>
+                <div class="col-9">
+                    <input id="itemName" name="itemName" placeholder="Freedom" type="text" class="form-control here"
+                        formControlName="itemName">
+                    <div *ngIf="itemName.invalid && (itemName.dirty || itemName.touched)" class="cs-invalid-feedback">
+                        <span *ngIf="itemName.errors.required">
+                            Item Name is Required
+                        </span>
+                        <span *ngIf="itemName.errors.minlength">
+                            Item name must have minimum of 3 characters
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="brand" class="col-3 col-form-label">Brand</label>
+                <div class="col-9">
+                    <input id="brand" name="brand" placeholder="Brand Name" type="text" class="form-control here"
+                        formControlName="brand">
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="category" class="col-3 col-form-label">Category</label>
+                <div class="col-9">
+                    <select id="category" name="category" aria-describedby="item-categoryHelpBlock" required="required"
+                        class="custom-select" formControlName="category">
+                        <option *ngFor="let category of categories" [ngValue]="category.name">
+                            {{ category.name }}
+                        </option>
+                    </select>
+                    <span id="item-categoryHelpBlock" class="form-text text-muted">Select Category from the list</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-3">Item Type</label>
+                <div class="col-9">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="itemtyperadio1" name="type" class="custom-control-input" value="pack"
+                            formControlName="type">
+                        <label class="custom-control-label" for="itemtyperadio1">Pack</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="itemtyperadio2" name="type" class="custom-control-input" value="single"
+                            formControlName="type">
+                        <label class="custom-control-label" for="itemtyperadio2">Single</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="quantityPerPack" class="col-3 col-form-label">Number of Items in a Pack</label>
+                <div class="col-9">
+                    <input id="quantityPerPack" name="quantityPerPack" placeholder="Enter value from 2 - 100" type="text"
+                        required="required" class="form-control here" formControlName="quantityPerPack">
+                </div>
+                <div *ngIf="quantityPerPack.invalid && (quantityPerPack.dirty || quantityPerPack.touched)" class="cs-invalid-feedback">
+                    <span *ngIf="quantityPerPack.errors.required">
+                        Item Name is Required
+                    </span>
+                    <span *ngIf="quantityPerPack.errors.minlength">
+                        Item name must have minimum of 3 characters
+                    </span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="unitPrice" class="col-3 col-form-label">Unit Price</label>
+                <div class="col-9">
+                    <input id="unitPrice" name="unitPrice" placeholder="Enter Value in Ruppees" type="text" class="form-control here"
+                        required="required" formControlName="unitPrice">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="totalPrice" class="col-3 col-form-label">Total Price</label>
+                <div class="col-9">
+                    <input id="totalPrice" name="totalPrice" placeholder="Enter value in rupees" type="text" class="form-control here"
+                        required="required" formControlName="totalPrice">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="sequence" class="col-3 col-form-label">Sequence</label>
+                <div class="col-9">
+                    <input id="sequence" name="sequence" placeholder="Item Order - 0 to 100" type="text" class="form-control here"
+                        formControlName="sequence">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="offset-3 col-9">
+                    <button name="submit" type="submit" class="btn btn-primary" [disabled]="!itemForm.valid">Submit</button>
+                </div>
+            </div>
+        </form>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Save</button>
