@@ -15,7 +15,7 @@ var SIDModel = /** @class */ (function () {
     SIDModel.prototype.loadDataStore = function () {
         // create and load datastore
         var datastorePath = path.join(this.appPath, this.dataStoreName);
-        console.log("Stock DB :: ", datastorePath);
+        console.log("Database path :: ", datastorePath);
         this.db = new Datastore({ filename: datastorePath, autoload: true });
     };
     return SIDModel;

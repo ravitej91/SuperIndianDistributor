@@ -1,9 +1,8 @@
-<div class="container">
-  <h1 class="title">
-    {{ 'PAGES.HOME.TITLE' | translate }}
-  </h1>
+<div class="container-fluid">
+  <ul>
+    <li *ngFor="let item of items">
+      {{ item.name }}
+    </li>
+  </ul>
 
-  <li *ngFor="let item of items">
-    {{ item.name }}
-  </li>
 </div>

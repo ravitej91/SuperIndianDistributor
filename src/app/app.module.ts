@@ -9,6 +9,9 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
+// Bootstrap
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 // NG Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -36,6 +39,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    NgbModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

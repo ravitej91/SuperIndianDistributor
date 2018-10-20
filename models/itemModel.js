@@ -19,15 +19,8 @@ var ItemModel = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.setDataStoreName(STORE_NAME);
         _this.loadDataStore();
-        _this.insertDocs();
         return _this;
     }
-    ItemModel.prototype.insertDocs = function () {
-        this.db.insert({
-            name: "Freedom",
-            cost: "5.0"
-        }, function (args) { });
-    };
     ItemModel.prototype.findAllDocs = function () {
         var _self = this;
         return Q.Promise(function (resolve, reject) {

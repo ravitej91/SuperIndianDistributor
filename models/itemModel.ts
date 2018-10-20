@@ -1,5 +1,4 @@
 import SIDModel from './index';
-import { importExpr } from '@angular/compiler/src/output/output_ast';
 import * as Q from 'q';
 
 const STORE_NAME = "item";
@@ -9,14 +8,6 @@ export class ItemModel extends SIDModel {
         super();
         this.setDataStoreName(STORE_NAME);
         this.loadDataStore();
-        this.insertDocs();
-    }
-
-    insertDocs() {
-        this.db.insert({
-            name: "Freedom",
-            cost: "5.0"
-        }, function (args) { });
     }
 
     findAllDocs() {

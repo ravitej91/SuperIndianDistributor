@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ipcRenderer } from 'electron';
 import { ThrowStmt } from '@angular/compiler';
+import { ElectronService } from '../../providers/electron.service';
 
 @Component({
   selector: 'app-home',
@@ -9,13 +9,14 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class HomeComponent implements OnInit {
   items: Array<any>;
-  constructor() {
-
+  electronService: ElectronService
+  constructor(electronService: ElectronService) {
+    this.electronService = electronService
   }
 
   ngOnInit() {
     let _self = this;
-    ipcRenderer.on("reply-to-frontend", function (event, args) {
+    this.electronService.ipcRenderer.on("reply-to-frontend", function (event, args) {
       console.log("Args :: ", args);
 
       _self.items = args;
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
       console.log('Event :: ', event);
     });
 
-    ipcRenderer.send("notify-backend", { action: "", model: "" });
+    this.electronService.ipcRenderer.send("notify-backend", { action: "", model: "" });
   }
 
 }
