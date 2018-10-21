@@ -16,7 +16,7 @@ export default class SIDBackend {
     startListening() {
         ipcMain.on('notify-backend', (event, args) => {
             // check for the action model and action
-            this.invokeAction(args.model, args.action)
+            this.invokeAction(args.model, args.action, args.data)
                 .then(function (docs) {
                     event.sender.send(args.listener, {
                         result: docs
@@ -28,10 +28,10 @@ export default class SIDBackend {
         });
     }
 
-    invokeAction(model, action) {
+    invokeAction(model, action, data) {
         return Q.Promise(function (resolve, reject) {
             definedModels[model]
-                .invokeAction(action)
+                .invokeAction(action, data)
                 .then(function (result) {
                     return resolve(result);
                 }).catch(function (err) {

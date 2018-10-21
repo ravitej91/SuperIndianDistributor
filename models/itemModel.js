@@ -12,6 +12,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("./index");
 var Q = require("q");
+var categoryModel_1 = require("./categoryModel");
+var _ = require("lodash");
 var STORE_NAME = "item";
 var ItemModel = /** @class */ (function (_super) {
     __extends(ItemModel, _super);
@@ -28,6 +30,74 @@ var ItemModel = /** @class */ (function (_super) {
                 if (error) {
                     console.log("ItemModel Error :: ", error);
                     return reject("");
+                }
+                return resolve(docs);
+            });
+        });
+    };
+    ItemModel.prototype.createItem = function (itemData) {
+        // add the stock parameters to the item
+        itemData.stock = {
+            openingStock: 0,
+            currentStock: 0,
+            closingStock: 0
+        };
+        // calculate the item code
+        var _self = this;
+        return Q.Promise(function (resolve, reject) {
+            _self.generateItemCode(itemData)
+                .then(function (itemCodeData) {
+                console.log("Item:terere :: Doc :: ", itemCodeData);
+                itemData.itemSuffix = itemCodeData.itemSuffix;
+                itemData.itemCode = itemCodeData.itemCode;
+                _self.db.insert(itemData, function (error, newDoc) {
+                    if (error) {
+                        return reject(error);
+                    }
+                    console.log("Newly Created Item :: ", newDoc);
+                    return resolve(newDoc);
+                });
+            })
+                .catch(function () {
+            });
+        });
+    };
+    ItemModel.prototype.generateItemCode = function (item) {
+        var itemSuffix = 10;
+        var itemCode;
+        var _self = this;
+        return Q.Promise(function (resolve, reject) {
+            // get the code for category name
+            categoryModel_1.Category.findByName(item.category)
+                .then(function (result) {
+                var category = result;
+                // get the last item with category name and suffix
+                console.log("Item:Cate :: Doc :: ", category);
+                _self.getAllItemsForCategory(item.category)
+                    .then(function (items) {
+                    console.log("Item:ItemsForCat :: Doc :: ", items);
+                    if (items.length) {
+                        // calculate the next suffix
+                        var sortedItems = _.orderBy(items, ['itemSuffix'], ['desc']);
+                        itemSuffix = sortedItems[0].itemSuffix + 1;
+                    }
+                    itemCode = String(category.code) + String(itemSuffix);
+                    console.log("Item:ItemsFofdrCat :: Doc :: ", itemCode);
+                    return resolve({
+                        itemCode: itemCode,
+                        itemSuffix: itemSuffix
+                    });
+                });
+            });
+        });
+    };
+    ItemModel.prototype.getAllItemsForCategory = function (category) {
+        var _self = this;
+        return Q.Promise(function (resolve, reject) {
+            _self.db.find({ category: category }, function (error, docs) {
+                if (error) {
+                    console.log("Error fetching items for category :: ", error);
+                    return reject(error);
                 }
                 return resolve(docs);
             });

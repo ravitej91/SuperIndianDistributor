@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ElectronService } from '../../providers/electron.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,26 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     let _self = this;
+
+    this.refreshItemList();
+
+    this.electronService.ipcRenderer.on("item-list-listener", function (event, args) {
+      _self.items = _.orderBy(args.result, ['itemCode'], ['asc']);
+    });
+
+    this.electronService.ipcRenderer.on("item-create-listener", function (event, args) {
+      _self.refreshItemList();
+    });
+  }
+
+
+  refreshItemList() {
+    // get all items
+    this.electronService.ipcRenderer.send("notify-backend", {
+      action: "findAllDocs",
+      model: "Item",
+      listener: "item-list-listener"
+    });
   }
 
 }

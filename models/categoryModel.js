@@ -13,7 +13,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("./index");
 var Q = require("q");
 var STORE_NAME = "category";
-var CATEGORY_NAMES = ['oil', 'peanuts', 'maida'];
+var CATEGORY_NAMES = [
+    {
+        name: 'Oil',
+        code: 1
+    },
+    {
+        name: 'Peanuts',
+        code: 2
+    }, {
+        name: 'Maida',
+        code: 3
+    }
+];
 var CategoryModel = /** @class */ (function (_super) {
     __extends(CategoryModel, _super);
     function CategoryModel() {
@@ -40,7 +52,7 @@ var CategoryModel = /** @class */ (function (_super) {
         return Q.Promise(function (resolve, reject) {
             var categoryDocs = [];
             CATEGORY_NAMES.map(function (category) {
-                categoryDocs.push({ name: category });
+                categoryDocs.push(category);
             });
             _this.db.insert(categoryDocs, function (error, docs) {
                 if (error) {
@@ -72,6 +84,19 @@ var CategoryModel = /** @class */ (function (_super) {
                     return reject(error);
                 }
                 return resolve(docs);
+            });
+        });
+    };
+    CategoryModel.prototype.findByName = function (name) {
+        var _self = this;
+        return Q.Promise(function (resolve, reject) {
+            _self.db.find({ name: name }, function (error, docs) {
+                if (error) {
+                    console.log("error :: ", error);
+                    return reject(error);
+                }
+                console.log("Category:FindBYName :: Doc :: ", docs);
+                return resolve(docs[0]);
             });
         });
     };

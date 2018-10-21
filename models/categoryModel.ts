@@ -3,7 +3,25 @@ import * as Q from 'q';
 import * as _ from 'lodash';
 
 const STORE_NAME = "category";
-const CATEGORY_NAMES = ['Oil', 'Peanuts', 'Maida'];
+const CATEGORY_NAMES = [
+    {
+        name: 'Oil',
+        code: 1
+    },
+    {
+        name: 'Peanuts',
+        code: 2
+    }, {
+        name: 'Maida',
+        code: 3
+    }
+];
+
+export interface CategoryInterface {
+    name: string;
+    code: string;
+
+}
 
 export class CategoryModel extends SIDModel {
     constructor() {
@@ -31,7 +49,7 @@ export class CategoryModel extends SIDModel {
             let categoryDocs = [];
 
             CATEGORY_NAMES.map((category) => {
-                categoryDocs.push({ name: category });
+                categoryDocs.push(category);
             });
 
             this.db.insert(categoryDocs, (error, docs) => {
@@ -70,6 +88,21 @@ export class CategoryModel extends SIDModel {
                 }
 
                 return resolve(docs);
+            });
+        });
+    }
+
+    findByName(name) {
+        let _self = this;
+
+        return Q.Promise((resolve, reject) => {
+            _self.db.find({ name: name }, function (error, docs) {
+                if (error) {
+                    console.log("error :: ", error);
+
+                    return reject(error);
+                }
+                return resolve(docs[0]);
             });
         });
     }

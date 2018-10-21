@@ -29,7 +29,7 @@ export default class SIDModel {
         });
     }
 
-    invokeAction(action) {
-        return this[action]();
+    invokeAction(action, data) {
+        return this[action](data);
     }
 }

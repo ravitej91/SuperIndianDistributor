@@ -22,8 +22,8 @@ var SIDModel = /** @class */ (function () {
             autoload: true
         });
     };
-    SIDModel.prototype.invokeAction = function (action) {
-        return this[action]();
+    SIDModel.prototype.invokeAction = function (action, data) {
+        return this[action](data);
     };
     return SIDModel;
 }());

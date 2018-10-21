@@ -15,7 +15,7 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th scope="col">#</th>
+                <th scope="col">Item Code</th>
                 <th scope="col">Item Name</th>
                 <th scope="col">Opening Stock</th>
                 <th scope="col">Current Stock</th>
@@ -23,40 +23,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Freedom</td>
-                <td>10</td>
-                <td>4</td>
-                <td>9</td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Freedom</td>
-                <td>10</td>
-                <td>4</td>
-                <td>9</td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Freedom</td>
-                <td>10</td>
-                <td>4</td>
-                <td>9</td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Freedom</td>
-                <td>10</td>
-                <td>4</td>
-                <td>9</td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Freedom</td>
-                <td>10</td>
-                <td>4</td>
-                <td>9</td>
+              <tr *ngFor="let item of items">
+                <th scope="row">{{ item.itemCode }}</th>
+                <td>{{ item.itemName }}</td>
+                <td>{{ item.stock.openingStock }}</td>
+                <td>{{ item.stock.currentStock }}</td>
+                <td>{{ item.stock.closingStock }}</td>
               </tr>
             </tbody>
           </table>

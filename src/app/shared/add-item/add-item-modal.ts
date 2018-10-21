@@ -16,8 +16,7 @@ export class AddItemModal {
     faRupeeSign = faRupeeSign;
     categories: Array<any>;
     electronService: ElectronService;
-
-    itemForm = this.fb.group({
+    itemFormSchematics = {
         itemName: ['', [Validators.required, Validators.minLength(3)]],
         brand: [''],
         category: ['', [Validators.required]],
@@ -26,7 +25,9 @@ export class AddItemModal {
         unitPrice: [11.05, [Validators.required, Validators.pattern("^[0-9]+(\.[0-9]{1,2})?$")]],
         totalPrice: [0],
         sequence: [100],
-    });
+    };
+
+    itemForm = this.fb.group(this.itemFormSchematics);
 
     constructor(config: NgbModalConfig, private modalService: NgbModal, private fb: FormBuilder, electronService: ElectronService) {
         config.backdrop = 'static';
@@ -104,6 +105,30 @@ export class AddItemModal {
     onSubmit() {
         // TODO: Use EventEmitter with form value
         console.warn(this.itemForm.value);
+        let _self = this;
+        this.electronService.ipcRenderer.on("item-create-listener", function (event, args) {
+
+        });
+
+        this.electronService.ipcRenderer.send("notify-backend", {
+            action: "createItem",
+            model: "Item",
+            listener: "item-create-listener",
+            data: this.itemForm.value
+        });
+
+        this.modalService.dismissAll();
+
+        this.itemForm.reset({
+            itemName: '',
+            brand: '',
+            type: 'pack',
+            quantityPerPack: 1,
+            unitPrice: 11.05,
+            totalPrice: 0,
+            sequence: 100,
+        });
+
     }
 
     get itemName() { return this.itemForm.get('itemName'); }

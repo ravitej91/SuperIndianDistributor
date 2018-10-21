@@ -16,7 +16,7 @@ var SIDBackend = /** @class */ (function () {
         var _this = this;
         electron_1.ipcMain.on('notify-backend', function (event, args) {
             // check for the action model and action
-            _this.invokeAction(args.model, args.action)
+            _this.invokeAction(args.model, args.action, args.data)
                 .then(function (docs) {
                 event.sender.send(args.listener, {
                     result: docs
@@ -27,10 +27,10 @@ var SIDBackend = /** @class */ (function () {
             });
         });
     };
-    SIDBackend.prototype.invokeAction = function (model, action) {
+    SIDBackend.prototype.invokeAction = function (model, action, data) {
         return Q.Promise(function (resolve, reject) {
             definedModels[model]
-                .invokeAction(action)
+                .invokeAction(action, data)
                 .then(function (result) {
                 return resolve(result);
             }).catch(function (err) {
