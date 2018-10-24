@@ -1,0 +1,67 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Item</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form [formGroup]="updateStockForm" novalidate (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+
+            <div class="form-row">
+                <div class="col">
+                    <label>Item</label>
+                </div>
+                <div class="col">
+                    <label>Updated Stock</label>
+                </div>
+                <div class="col">
+                    <label>Total Stock</label>
+                </div>
+                <div class="col-2">
+                    <label></label>
+                </div>
+            </div>
+
+            <div formArrayName="stocks">
+                <div *ngFor="let stock of updateStockForm.controls.stocks.controls; let i=index" style="margin-bottom: 10px;">
+                    <div class="form-row" [formGroupName]="i">
+                        <div class="col">
+                            <input name="item" placeholder="Item Code" type="text" class="form-control here"
+                                formControlName="item" [ngbTypeahead]="search" [resultFormatter]="formatter"
+                                [inputFormatter]="formatter" (selectItem)="itemSelected($event, i)" />
+                            <div *ngIf="stock.controls.item.invalid && (stock.controls.item.dirty || stock.controls.item.touched)"
+                                class="cs-invalid-feedback">
+                                <span *ngIf="stock.controls.item.errors.itemNotSelected">
+                                    Please select item from the suggestion
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <input name="updatedStock" placeholder="Updated Stock" type="number" class="form-control here"
+                                formControlName="updatedStock" (keydown.Tab)="onKey($event)" />
+                        </div>
+                        <div class="col">
+                            <input name="totalStock" placeholder="Total Stock" type="number" class="form-control here"
+                                formControlName="totalStock" tabindex="-1" readonly />
+                            <input name="initialStock" placeholder="Item Code" type="hidden" formControlName="initialStock" />
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-danger rounded-circle" type="button" tabindex="-1" *ngIf="updateStockForm.controls.stocks.controls.length > 1"
+                                (click)="removeItem(i)">
+                                <fa-icon [icon]="faTimes"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add Stock Button -->
+            <button class="btn btn-outline-primary" type="button" (click)="addStockRow()">Add Item</button>
+        </div>
+        <div class="modal-footer">
+            <button name="submit" type="submit" class="btn btn-primary" [disabled]="!updateStockForm.valid">Save</button>
+        </div>
+    </form>
+</ng-template>
+
+<button type="button" class="btn btn-outline-primary" (click)="open(content)">Update Stock</button>&nbsp;

@@ -95,7 +95,6 @@ var CategoryModel = /** @class */ (function (_super) {
                     console.log("error :: ", error);
                     return reject(error);
                 }
-                console.log("Category:FindBYName :: Doc :: ", docs);
                 return resolve(docs[0]);
             });
         });

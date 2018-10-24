@@ -47,14 +47,12 @@ var ItemModel = /** @class */ (function (_super) {
         return Q.Promise(function (resolve, reject) {
             _self.generateItemCode(itemData)
                 .then(function (itemCodeData) {
-                console.log("Item:terere :: Doc :: ", itemCodeData);
                 itemData.itemSuffix = itemCodeData.itemSuffix;
                 itemData.itemCode = itemCodeData.itemCode;
                 _self.db.insert(itemData, function (error, newDoc) {
                     if (error) {
                         return reject(error);
                     }
-                    console.log("Newly Created Item :: ", newDoc);
                     return resolve(newDoc);
                 });
             })
@@ -72,17 +70,14 @@ var ItemModel = /** @class */ (function (_super) {
                 .then(function (result) {
                 var category = result;
                 // get the last item with category name and suffix
-                console.log("Item:Cate :: Doc :: ", category);
                 _self.getAllItemsForCategory(item.category)
                     .then(function (items) {
-                    console.log("Item:ItemsForCat :: Doc :: ", items);
                     if (items.length) {
                         // calculate the next suffix
                         var sortedItems = _.orderBy(items, ['itemSuffix'], ['desc']);
                         itemSuffix = sortedItems[0].itemSuffix + 1;
                     }
                     itemCode = String(category.code) + String(itemSuffix);
-                    console.log("Item:ItemsFofdrCat :: Doc :: ", itemCode);
                     return resolve({
                         itemCode: itemCode,
                         itemSuffix: itemSuffix
