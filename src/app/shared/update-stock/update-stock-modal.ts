@@ -9,6 +9,7 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { TouchSequence } from 'selenium-webdriver';
 import { storeCleanupWithContext } from '@angular/core/src/render3/instructions';
+import { Transform } from 'stream';
 
 @Component({
     selector: 'update-stock-modal',
@@ -145,23 +146,39 @@ export class UpdateStockModal {
 
     onSubmit() {
         console.warn(this.updateStockForm.value);
+        let _self = this;
         // get the stocks array
         let stocks = this.updateStockForm.value.stocks;
         _.forEach(stocks, function (stock) {
-            // transform to item update            
+            // transform to item update
+            let item = _self.transformToItemUpdate(stock);
             // update stock in database
+            _self.electronService.ipcRenderer.send("notify-backend", {
+                action: "updateItem",
+                model: "Item",
+                listener: "item-update-listener",
+                data: item
+            });
         });
+
+        this.modalService.dismissAll();
+
+        this.addForm();
     }
 
     transformToItemUpdate(stock) {
+        // get the item and update stocks
+        stock.item.stock.openingStock += stock.updatedStock;
+        stock.item.stock.currentStock += stock.updatedStock;
+        stock.item.stock.closingStock += stock.updatedStock;
 
+        let item = stock.item;
+        return item;
     }
 };
 
 export function itemSelectedValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-        console.log("Controle :: ", control);
-        console.log("Is One :: ", _.isObject(control.value));
         return _.isObject(control.value) ? null : { 'itemNotSelected': { value: control.value } };
     };
 }

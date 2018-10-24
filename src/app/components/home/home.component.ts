@@ -26,6 +26,10 @@ export class HomeComponent implements OnInit {
     this.electronService.ipcRenderer.on("item-create-listener", function (event, args) {
       _self.refreshItemList();
     });
+
+    this.electronService.ipcRenderer.on("item-update-listener", function (event, args) {
+      _self.refreshItemList();
+    });
   }
 
 

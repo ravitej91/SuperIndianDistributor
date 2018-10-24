@@ -57,6 +57,24 @@ export class ItemModel extends SIDModel {
         });
     }
 
+    updateItem(item) {
+        let _self = this;
+        return Q.Promise(function (resolve, reject) {
+            // update the database
+            _self.db.update({ _id: item._id }, item, {}, function (err, replacedDocument) {
+                if (err) {
+                    console.log("Error :: Items updated error :: ", err);
+
+                    return reject(err);
+                }
+
+                return resolve(replacedDocument);
+            });
+        });
+
+
+    }
+
     generateItemCode(item) {
         let itemSuffix = 10;
         let itemCode;
